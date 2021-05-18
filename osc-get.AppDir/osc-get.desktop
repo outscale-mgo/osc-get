@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=osc-get
+Exec=osc-get
+Comment=Outscale simpel Helper to retrive AK/SK
+Categories=Development;
+Terminal=true
+Icon=appimage-logo
