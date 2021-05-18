@@ -1,3 +1,4 @@
+#include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -26,14 +27,16 @@ void print_users(struct json_object *js_f, const char *u)
 
 int main(int ac, char **av)
 {
-	const char *dest = "/.oapi_credentials";
+	const char *dest0 = "/.osc/config.json";
+	const char *dest1 = "/.oapi_credentials";
 	char buf[1024];
 	char *home = getenv("HOME");
 	struct json_object *js_f;
 	int mode = 0;
 	int flag = 0;
+	int i;
 
-	for (int i = 1; i < ac; ++i) {
+	for (i = 1; i < ac; ++i) {
 		if (!strcmp(av[i], "-u")) {
 			mode = 1;
 			if (i + 1 >= ac) {
@@ -67,7 +70,10 @@ int main(int ac, char **av)
 		}
 	}
 
-	strcpy(stpcpy(buf, home), dest);
+
+	strcpy(stpcpy(buf, home), dest0);
+	if (access(buf, F_OK ) != 0)
+	  strcpy(stpcpy(buf, home), dest1);
 	js_f = json_object_from_file(buf);
 	if (!js_f) {
 		fprintf(stderr, "can't open %s\n", buf);
